@@ -1,0 +1,11 @@
+/Users/carlos/Documents/school/semester4/testing-and-qa/modules/03/lab/MyMath/bin/Debug/net9.0/MyMath.deps.json
+/Users/carlos/Documents/school/semester4/testing-and-qa/modules/03/lab/MyMath/bin/Debug/net9.0/MyMath.dll
+/Users/carlos/Documents/school/semester4/testing-and-qa/modules/03/lab/MyMath/bin/Debug/net9.0/MyMath.pdb
+/Users/carlos/Documents/school/semester4/testing-and-qa/modules/03/lab/MyMath/obj/Debug/net9.0/MyMath.GeneratedMSBuildEditorConfig.editorconfig
+/Users/carlos/Documents/school/semester4/testing-and-qa/modules/03/lab/MyMath/obj/Debug/net9.0/MyMath.AssemblyInfoInputs.cache
+/Users/carlos/Documents/school/semester4/testing-and-qa/modules/03/lab/MyMath/obj/Debug/net9.0/MyMath.AssemblyInfo.cs
+/Users/carlos/Documents/school/semester4/testing-and-qa/modules/03/lab/MyMath/obj/Debug/net9.0/MyMath.csproj.CoreCompileInputs.cache
+/Users/carlos/Documents/school/semester4/testing-and-qa/modules/03/lab/MyMath/obj/Debug/net9.0/MyMath.dll
+/Users/carlos/Documents/school/semester4/testing-and-qa/modules/03/lab/MyMath/obj/Debug/net9.0/refint/MyMath.dll
+/Users/carlos/Documents/school/semester4/testing-and-qa/modules/03/lab/MyMath/obj/Debug/net9.0/MyMath.pdb
+/Users/carlos/Documents/school/semester4/testing-and-qa/modules/03/lab/MyMath/obj/Debug/net9.0/ref/MyMath.dll
