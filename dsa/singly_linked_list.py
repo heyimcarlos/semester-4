@@ -1,14 +1,11 @@
 from __future__ import annotations
 
-from typing import Generic, Optional, TypeVar
+from typing import Generic, Optional, Self, TypeVar
 
 T = TypeVar("T")
 
 
 class Node(Generic[T]):
-    _element: T
-    _next: Optional[Node]
-
     def __init__(
         self,
         value: T,
@@ -33,10 +30,6 @@ class Node(Generic[T]):
 
 
 class SinglyLinkedList(Generic[T]):
-    _head: Optional[Node[T]]
-    _tail: Optional[Node[T]]
-    _size: int
-
     def __init__(self) -> None:
         self._size = 0
         self._head = None
@@ -67,20 +60,25 @@ class SinglyLinkedList(Generic[T]):
         if self.is_empty():
             return None
 
-        curr = self._head
-        while curr is not None:
-            if curr._next is None or self._tail is None:
-                return None
+        if self._size == 1:
+            tmp = self._head
+            self._head = None
+            self._tail = None
+            self._size -= 1
+            return tmp
 
-            # this is matching the element, not the memory address.
-            if curr._next.get_element() == self._tail.get_element():
-                tail = self._tail
-                curr._next = None
-                self._tail = curr
-                self._size -= 1
-                return tail
+        curr = self._head
+        # traverse until current.next is the tail (we're at the penultimate node)
+        while curr is not None and curr._next != self._tail:
             curr = curr._next
-        return curr
+
+        tmp = self._tail
+        # we need to validate this again (python compiler **sucks**)
+        if curr:
+            curr._next = None
+        self._tail = curr
+        self._size -= 1
+        return tmp
 
     def pop_front(self) -> Optional[Node[T]]:
         head = self._head
@@ -96,7 +94,7 @@ class SinglyLinkedList(Generic[T]):
     def front(self) -> Optional[Node[T]]:
         return self._head
 
-    def back(self) -> Optional[Node[T]]:
+    def back(self):
         return self._tail
 
     def contains(self, value: T) -> bool:
@@ -107,27 +105,17 @@ class SinglyLinkedList(Generic[T]):
             curr = curr._next
         return False
 
-    #  TODO: add `from`, `append/concat`
-    # define new (which creates a new instance of singlylinkedlist)
-    # def new(self) -> SinglyLinkedList()
+    def len(self) -> int:
+        return self._size
+
+    def append(self, other: Self):
+        if self.is_empty():
+            return other
+
+        if self._tail is not None:
+            self._tail._next = other._head
+
+    #  TODO: add `from`
 
     def __str__(self) -> str:
         return self._head.__str__()
-
-
-singly_linked_list = SinglyLinkedList()
-singly_linked_list.push_front(1)
-singly_linked_list.push_front(2)
-singly_linked_list.push_front(3)
-singly_linked_list.push_front(4)
-singly_linked_list.push_front(5)
-singly_linked_list.push_back(0)
-print(f"{singly_linked_list}")
-pf = singly_linked_list.pop_front()
-print(f"pop front: {singly_linked_list}")
-pb = singly_linked_list.pop_back()
-print(f"pop back: {singly_linked_list}")
-print(f"pop back: {pb}")
-c = singly_linked_list.contains(1)
-print(c)
-# print(f"last {singly_linked_list.back()}")
