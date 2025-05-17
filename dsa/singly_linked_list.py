@@ -99,7 +99,15 @@ class SinglyLinkedList(Generic[T]):
     def back(self) -> Optional[Node[T]]:
         return self._tail
 
-    #  TODO: add `from`, `pop_back`, `pop_front`, `append/concat`, `contains`
+    def contains(self, value: T) -> bool:
+        curr = self._head
+        while curr is not None:
+            if curr.get_element() == value:
+                return True
+            curr = curr._next
+        return False
+
+    #  TODO: add `from`, `append/concat`
     # define new (which creates a new instance of singlylinkedlist)
     # def new(self) -> SinglyLinkedList()
 
@@ -120,4 +128,6 @@ print(f"pop front: {singly_linked_list}")
 pb = singly_linked_list.pop_back()
 print(f"pop back: {singly_linked_list}")
 print(f"pop back: {pb}")
+c = singly_linked_list.contains(1)
+print(c)
 # print(f"last {singly_linked_list.back()}")
