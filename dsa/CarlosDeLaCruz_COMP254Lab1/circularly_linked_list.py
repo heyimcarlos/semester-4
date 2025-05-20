@@ -45,15 +45,16 @@ class CircularlyLinkedList(Generic[T]):
             self._tail = node
             self._tail._next = self._tail
         else:
-            node._next = self._tail
+            node._next = self._tail._next
             self._tail._next = node
+
         self._size += 1
 
     def push_back(self, value: T) -> None:
         node = Node(value)
         if self._tail is None:
-            node._next = node
             self._tail = node
+            self._tail._next = node
         else:
             node._next = self._tail._next
             self._tail._next = node
@@ -65,15 +66,16 @@ class CircularlyLinkedList(Generic[T]):
 
     def clone(self):
         cll = CircularlyLinkedList()
+        # return new empty list if the current is empty
         if self.is_empty():
             return cll
 
         if self._tail:
             head = self._tail._next
             if head:
-                cll.push_front(head.get_element())
-                curr = self._tail._next
-
+                cll.push_back(head.get_element())
+                curr = head._next
+                # iterate size - 1 times, because the list already holds the head
                 for _ in range(self._size - 1):
                     if curr:
                         cll.push_back(curr.get_element())
@@ -81,20 +83,26 @@ class CircularlyLinkedList(Generic[T]):
                 return cll
 
     def __str__(self) -> str:
+        if self.is_empty():
+            return "[] (Circular)"
         elements = []
         if self._tail:
             curr = self._tail._next
-            while curr and curr != self._tail:
-                elements.append(str(curr.get_element()))
-                curr = curr._next
-        return " -> ".join(elements) if elements else "[]"
+            for _ in range(self._size):
+                if curr:
+                    elements.append(str(curr.get_element()))
+                    curr = curr._next
+        return " -> ".join(elements) + " -> (head)"
 
 
 if __name__ == "__main__":
     cll = CircularlyLinkedList()
-    cll.push_back(1)
-    cll.push_back(2)
-    cll.push_back(3)
+    cll.push_front(1)
+    cll.push_front(2)
+    cll.push_front(3)
+    cll.push_back(4)
+    cll.push_back(5)
+    cll.push_back(6)
 
     cloned_cll = cll.clone()
     print(cll == cloned_cll)
