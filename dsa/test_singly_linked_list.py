@@ -47,6 +47,26 @@ class TestSinglyLinkedList(unittest.TestCase):
             self.assertEqual(detached.get_element(), 1)
         self.assertTrue(self.list.is_empty())
 
+    def test_swap(self):
+        self.list.push_back(1)
+        self.list.push_back(2)
+        self.list.push_back(3)
+        self.list.push_back(4)
+        self.list.push_back(5)
+
+        print("Original")
+        print(self.list)
+
+        head = self.list.front()
+        node2 = self.list.back()
+        if head and node2:
+            node1 = head._next
+            if node1:
+                self.list.swap(node1, node2)
+
+        print("after swap")
+        print(self.list)
+
 
 if __name__ == "__main__":
     unittest.main()
