@@ -113,12 +113,23 @@ class SinglyLinkedList(Generic[T]):
     def len(self) -> int:
         return self._size
 
-    def append(self, other: Self):
-        if self.is_empty():
-            return other
+    def concat(self, other: Self):
+        if other is None or other.is_empty():
+            return
 
-        if self._tail is not None:
-            self._tail._next = other._head
+        if self.is_empty():
+            self._head = other._head
+            self._tail = other._tail
+            self._size = other._size
+        else:
+            if self._tail:
+                self._tail._next = other._head
+                self._tail = other._tail
+                self._size += other._size
+
+        other._head = None
+        other._tail = None
+        other._size = 0
 
     #  TODO: add `from`
 
