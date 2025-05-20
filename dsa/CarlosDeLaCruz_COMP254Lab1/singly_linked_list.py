@@ -112,6 +112,8 @@ class SinglyLinkedList(Generic[T]):
     def len(self) -> int:
         return self._size
 
+    #  NOTE: Assignment 1
+    # Exercise 2
     def concat(self, other: Self):
         if other is None or other.is_empty():
             return
@@ -129,8 +131,6 @@ class SinglyLinkedList(Generic[T]):
         other._head = None
         other._tail = None
         other._size = 0
-
-    #  TODO: add `from`
 
     #  NOTE: Assignment 1
     # Exercise 1
@@ -174,6 +174,7 @@ class SinglyLinkedList(Generic[T]):
         else:
             pred2._next = node1
 
+        # Covering adjacent nodes
         if node1._next == node2:
             tmp = node2._next
             node1._next = tmp
@@ -202,6 +203,7 @@ class SinglyLinkedList(Generic[T]):
 
 
 if __name__ == "__main__":
+    # Carlos De La Cruz (301391100)
     ll = SinglyLinkedList()
     ll.push_back(1)
     ll.push_back(2)

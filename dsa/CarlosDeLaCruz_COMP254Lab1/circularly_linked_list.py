@@ -64,6 +64,8 @@ class CircularlyLinkedList(Generic[T]):
     def is_empty(self) -> bool:
         return True if self._size == 0 else False
 
+    #  NOTE:
+    # Exercise 3
     def clone(self):
         cll = CircularlyLinkedList()
         # return new empty list if the current is empty
@@ -75,7 +77,7 @@ class CircularlyLinkedList(Generic[T]):
             if head:
                 cll.push_back(head.get_element())
                 curr = head._next
-                # iterate size - 1 times, because the list already holds the head
+                # iterate (size - 1) times, because the list already holds the head
                 for _ in range(self._size - 1):
                     if curr:
                         cll.push_back(curr.get_element())
@@ -96,6 +98,7 @@ class CircularlyLinkedList(Generic[T]):
 
 
 if __name__ == "__main__":
+    # Carlos De La Cruz (301391100)
     cll = CircularlyLinkedList()
     cll.push_front(1)
     cll.push_front(2)

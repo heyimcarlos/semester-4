@@ -47,6 +47,30 @@ class TestSinglyLinkedList(unittest.TestCase):
             self.assertEqual(detached.get_element(), 1)
         self.assertTrue(self.list.is_empty())
 
+    def test_concat(self):
+        self.list.push_back(1)
+        self.list.push_back(2)
+        self.list.push_back(3)
+
+        other_list = SinglyLinkedList()
+        other_list.push_back(4)
+        other_list.push_back(5)
+
+        print("Testing Concat Method")
+        print("Original")
+        print(self.list)
+        print(other_list)
+
+        self.list.concat(other_list)
+
+        print("after concat")
+        print(self.list)
+        print(other_list)
+
+        self.assertTrue(other_list.is_empty())
+        self.assertEqual(self.list.len(), 5)
+        print("End Testing Concat Method \n")
+
     def test_swap(self):
         self.list.push_back(1)
         self.list.push_back(2)
@@ -54,7 +78,8 @@ class TestSinglyLinkedList(unittest.TestCase):
         self.list.push_back(4)
         self.list.push_back(5)
 
-        print("Original")
+        print("Testing Swap Original")
+        print(f"swapping {self.list.front()._next} and {self.list.back()}")
         print(self.list)
 
         head = self.list.front()
@@ -64,8 +89,8 @@ class TestSinglyLinkedList(unittest.TestCase):
             if node1:
                 self.list.swap(node1, node2)
 
-        print("after swap")
         print(self.list)
+        print("End Testing Swap")
 
 
 if __name__ == "__main__":
