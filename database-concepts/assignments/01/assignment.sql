@@ -74,3 +74,21 @@ HAVING SUM(quantity) = (
     )
 );
 
+-- 3. List the countries with maximum numbers of locations.
+select * from countries;
+select * from locations;
+select * from regions;
+
+SELECT c.country_id, c.country_name, COUNT(*) location_count
+FROM countries c
+JOIN locations l ON c.country_id = l.country_id
+GROUP BY c.country_id, c.country_name
+HAVING COUNT(*) = (
+    SELECT MAX(location_total)
+    FROM (
+        SELECT COUNT(*) location_total
+        FROM locations
+        GROUP BY country_id
+        ORDER BY COUNT(*) DESC
+    )
+);
