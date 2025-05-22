@@ -92,3 +92,29 @@ HAVING COUNT(*) = (
         ORDER BY COUNT(*) DESC
     )
 );
+
+-- 4. List the salesman(s) with maximum number of orders.
+select * from employees where job_title = 'Sales Representative';
+select * from orders order by order_id desc;
+-- increase the number of order of salesman_id = 64 to have matching (13) orders
+Insert into  ORDERS (ORDER_ID,CUSTOMER_ID,STATUS,SALESMAN_ID,ORDER_DATE) values (106,6,'Shipped',64,to_date('01-NOV-18','DD-MON-RR'));
+
+SELECT e.employee_id, CONCAT(CONCAT(e.first_name, ' '), e.last_name) name, COUNT(*)
+FROM employees e
+JOIN orders o ON e.employee_id = o.salesman_id
+GROUP BY e.employee_id, CONCAT(CONCAT(e.first_name, ' '), e.last_name);
+
+SELECT e.employee_id, CONCAT(CONCAT(e.first_name, ' '), e.last_name) name, COUNT(*) order_count
+FROM orders o
+JOIN employees e ON o.salesman_id = e.employee_id
+GROUP BY e.employee_id, CONCAT(CONCAT(e.first_name, ' '), e.last_name)
+HAVING COUNT(*) = (
+    SELECT MAX(order_count)
+    FROM (
+        SELECT salesman_id, COUNT(*) order_count
+        FROM orders
+        WHERE salesman_id IS NOT NULL
+        GROUP BY salesman_id
+    )
+);
+
