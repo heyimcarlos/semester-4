@@ -118,3 +118,16 @@ HAVING COUNT(*) = (
     )
 );
 
+-- 5. List the customer(s) with max number of orders.
+SELECT c.customer_id, c.name, COUNT(*)
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.name
+HAVING COUNT(*) = (
+    SELECT MAX(order_count)
+    FROM (
+        SELECT customer_id, COUNT(*) order_count
+        FROM orders
+        GROUP BY customer_id
+    )
+);
