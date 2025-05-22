@@ -5,7 +5,8 @@
 -- The primary key of order_items is a composite key of order_id and item_id
 
 -- 1. List the product that have max quantities ordered in one order.
--- a)
+
+-- a) HAVING
 SELECT 
     oi.product_id,
     oi.order_id,
@@ -29,7 +30,7 @@ HAVING
         )
     );
 
--- b)
+-- b) ROWNUM
 SELECT *
 FROM (
     SELECT product_id, order_id, SUM(quantity) as total_quantity
@@ -40,10 +41,9 @@ FROM (
 WHERE ROWNUM = 1;
 
 -- 2. List the name and quantity of the inventory product with minimum quantity (excluding nulls).
-select * from inventories;
 
--- a)
-SELECT p.product_name, MIN(inv.total_inventory)
+-- a) ROWNUM
+SELECT p.product_name, MIN(i.total_inventory)
 FROM (
     -- total inventory (across all warehouses)
     SELECT product_id, SUM(quantity) total_inventory
@@ -51,71 +51,45 @@ FROM (
     WHERE quantity IS NOT NULL
     GROUP BY product_id
     ORDER BY SUM(quantity)
-) inv
-JOIN products p on inv.product_id = p.product_id
+) i
+JOIN products p on i.product_id = p.product_id
 WHERE ROWNUM = 1
 GROUP BY p.product_name;
 
--- b)
+-- b) HAVING (returns several if tied on low quantity)
 SELECT p.product_name, SUM(quantity)
 FROM inventories i
 JOIN products p ON i.product_id = p.product_id
 GROUP BY p.product_name
 -- the sum of all inventory quantities of one product that matches the min
 HAVING SUM(quantity) = (
-    -- min total inventory
-    SELECT MIN(total_inventory)
-    FROM (
-        -- total inventory (across all warehouses)
-        SELECT SUM(quantity) total_inventory
-        FROM inventories 
-        WHERE quantity IS NOT NULL
-        GROUP BY product_id
-    )
+    SELECT MIN(SUM(quantity))
+    FROM inventories 
+    WHERE quantity IS NOT NULL
+    GROUP BY product_id
 );
 
 -- 3. List the countries with maximum numbers of locations.
-select * from countries;
-select * from locations;
-select * from regions;
-
 SELECT c.country_id, c.country_name, COUNT(*) location_count
 FROM countries c
 JOIN locations l ON c.country_id = l.country_id
 GROUP BY c.country_id, c.country_name
 HAVING COUNT(*) = (
-    SELECT MAX(location_total)
-    FROM (
-        SELECT COUNT(*) location_total
-        FROM locations
-        GROUP BY country_id
-        ORDER BY COUNT(*) DESC
-    )
+    SELECT MAX(COUNT(*))
+    FROM locations
+    GROUP BY country_id
 );
 
 -- 4. List the salesman(s) with maximum number of orders.
-select * from employees where job_title = 'Sales Representative';
-select * from orders order by order_id desc;
--- increase the number of order of salesman_id = 64 to have matching (13) orders
-Insert into  ORDERS (ORDER_ID,CUSTOMER_ID,STATUS,SALESMAN_ID,ORDER_DATE) values (106,6,'Shipped',64,to_date('01-NOV-18','DD-MON-RR'));
-
-SELECT e.employee_id, CONCAT(CONCAT(e.first_name, ' '), e.last_name) name, COUNT(*)
-FROM employees e
-JOIN orders o ON e.employee_id = o.salesman_id
-GROUP BY e.employee_id, CONCAT(CONCAT(e.first_name, ' '), e.last_name);
-
 SELECT e.employee_id, CONCAT(CONCAT(e.first_name, ' '), e.last_name) name, COUNT(*) order_count
 FROM orders o
 JOIN employees e ON o.salesman_id = e.employee_id
 GROUP BY e.employee_id, CONCAT(CONCAT(e.first_name, ' '), e.last_name)
 HAVING COUNT(*) = (
-    SELECT MAX(order_count)
-    FROM (
-        SELECT salesman_id, COUNT(*) order_count
-        FROM orders
-        WHERE salesman_id IS NOT NULL
-        GROUP BY salesman_id
-    )
+    SELECT MAX(COUNT(*))
+    FROM orders
+    WHERE salesman_id IS NOT NULL
+    GROUP BY salesman_id
 );
 
 -- 5. List the customer(s) with max number of orders.
@@ -124,10 +98,7 @@ FROM customers c
 JOIN orders o ON c.customer_id = o.customer_id
 GROUP BY c.customer_id, c.name
 HAVING COUNT(*) = (
-    SELECT MAX(order_count)
-    FROM (
-        SELECT customer_id, COUNT(*) order_count
-        FROM orders
-        GROUP BY customer_id
-    )
+    SELECT MAX(COUNT(*)) order_count
+    FROM orders
+    GROUP BY customer_id
 );
