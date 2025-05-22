@@ -39,3 +39,38 @@ FROM (
 )
 WHERE ROWNUM = 1;
 
+-- 2. List the name and quantity of the inventory product with minimum quantity (excluding nulls).
+select * from inventories;
+
+-- a)
+SELECT p.product_name, MIN(inv.total_inventory)
+FROM (
+    -- total inventory (across all warehouses)
+    SELECT product_id, SUM(quantity) total_inventory
+    FROM inventories
+    WHERE quantity IS NOT NULL
+    GROUP BY product_id
+    ORDER BY SUM(quantity)
+) inv
+JOIN products p on inv.product_id = p.product_id
+WHERE ROWNUM = 1
+GROUP BY p.product_name;
+
+-- b)
+SELECT p.product_name, SUM(quantity)
+FROM inventories i
+JOIN products p ON i.product_id = p.product_id
+GROUP BY p.product_name
+-- the sum of all inventory quantities of one product that matches the min
+HAVING SUM(quantity) = (
+    -- min total inventory
+    SELECT MIN(total_inventory)
+    FROM (
+        -- total inventory (across all warehouses)
+        SELECT SUM(quantity) total_inventory
+        FROM inventories 
+        WHERE quantity IS NOT NULL
+        GROUP BY product_id
+    )
+);
+
