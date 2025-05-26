@@ -61,14 +61,12 @@ class TestSinglyLinkedList(unittest.TestCase):
         print(self.list)
         print(other_list)
 
-        self.list.concat(other_list)
+        output = self.list.concat(other_list)
 
         print("after concat")
-        print(self.list)
-        print(other_list)
+        print(output)
 
-        self.assertTrue(other_list.is_empty())
-        self.assertEqual(self.list.len(), 5)
+        self.assertEqual(output.len(), 5)
         print("End Testing Concat Method \n")
 
     def test_swap(self):

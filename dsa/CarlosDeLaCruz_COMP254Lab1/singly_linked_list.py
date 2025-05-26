@@ -115,22 +115,25 @@ class SinglyLinkedList(Generic[T]):
     #  NOTE: Assignment 1
     # Exercise 2
     def concat(self, other: Self):
-        if other is None or other.is_empty():
-            return
+        # create a new list for output
+        sll = SinglyLinkedList()
 
         if self.is_empty():
-            self._head = other._head
-            self._tail = other._tail
-            self._size = other._size
+            sll._head = other._head
+            sll._tail = other._tail
+            sll._size = other._size
         else:
-            if self._tail:
-                self._tail._next = other._head
-                self._tail = other._tail
-                self._size += other._size
+            curr = self._head
+            while curr is not None:
+                sll.push_back(curr.get_element())
+                curr = curr._next
 
-        other._head = None
-        other._tail = None
-        other._size = 0
+            if sll._tail:
+                sll._tail._next = other._head
+                sll._tail = other._tail
+                sll._size += other._size
+
+        return sll
 
     #  NOTE: Assignment 1
     # Exercise 1
